@@ -35,9 +35,8 @@ class database_interface
     public static function query($query){
         self::initialize();
         $dbconn = pg_connect(
-            "user='".self::$user."'dbname='".self::$dbname."'password ='".self::$password."'")
-        or die('Could not connect: ' . pg_last_error());
-        $result = pg_query($query) or die('Query failed: ' . pg_last_error());
+            "user='".self::$user."'dbname='".self::$dbname."'password ='".self::$password."'");
+        $result = pg_query($query);
         // Closing connection
         pg_close($dbconn);
         return $result;
@@ -47,10 +46,14 @@ class database_interface
 
     public static function makeTable($result, $id=null){
         self::initialize();
+        if($result==null){
+            echo "Error: Query failed";
+            return;
+        }
         $first = true;
         while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
             if($first){
-                echo '<table id='.$id.' class=display border=\'1\'>
+                echo '<table id="" class=display border=\'1\'>
                 <thead>
                 <tr>';
                 $keys = array_keys($line);
