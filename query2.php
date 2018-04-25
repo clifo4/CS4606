@@ -13,7 +13,7 @@ LEFT JOIN runs_web on dockerswarm.dsid=runs_web.dsid
 LEFT JOIN webappfirewall on Runs_web.wafid=webappfirewall.wafid
 LEFT JOIN balances on webappfirewall.wafid=balances.wafid
 LEFT JOIN loadbalancer on balances.lbid=loadbalancer.lbid
-where physicalServer.psid='64806'";
+where physicalServer.psid='super-server'";
 $result=database_interface::query($query);
 database_interface::makeTable($result);
 ?>
