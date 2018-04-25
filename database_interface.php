@@ -6,6 +6,7 @@
  * Time: 12:41 AM
  */
 
+//To use, put require_once(database_interface.php); at the top of each php file you want to use it in
 class database_interface
 {
     private static $initialized = false;
@@ -40,6 +41,18 @@ class database_interface
         // Closing connection
         pg_close($dbconn);
         return $result;
+    }
+
+    public static function makeTable($result){
+        echo "<table>\n";
+        while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+            echo "\t<tr>\n";
+            foreach ($line as $col_value) {
+                echo "\t\t<td>$col_value</td>\n";
+            }
+            echo "\t</tr>\n";
+        }
+        echo "</table>\n";
     }
 
 }
