@@ -1,15 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Clifton
- * Date: 4/18/2018
- * Time: 4:25 PM
- */
 $dbconn = pg_connect("user='team sick scripts' dbname='team sick scripts' password =123456") 
 	or die('Could not connect: ' . pg_last_error());
-
-$query = $_POST["query"];
-
+$query = '';
 $result = pg_query($query) or die('Query failed: ' . pg_last_error());
 // Printing results in HTML
 echo "<table>\n";
@@ -25,5 +17,4 @@ echo "</table>\n";
 pg_free_result($result);
 // Closing connection
 pg_close($dbconn);
-
 ?>
