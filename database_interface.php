@@ -35,7 +35,7 @@ class database_interface
     public static function query($query){
         self::initialize();
         $dbconn = pg_connect(
-            "user=".self::$user."dbname=".self::$dbname."password =".self::$password)
+            "user='".self::$user."'dbname='".self::$dbname."'password ='".self::$password."'")
         or die('Could not connect: ' . pg_last_error());
         $result = pg_query($query) or die('Query failed: ' . pg_last_error());
         // Closing connection
@@ -43,16 +43,30 @@ class database_interface
         return $result;
     }
 
-    public static function makeTable($result){
-        echo "<table>\n";
-        while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
-            echo "\t<tr>\n";
-            foreach ($line as $col_value) {
-                echo "\t\t<td>$col_value</td>\n";
-            }
-            echo "\t</tr>\n";
-        }
-        echo "</table>\n";
-    }
+    //Calling this function with the result object from the above query method will make a table with headers
 
+    public static function makeTable($result, $id=null){
+        self::initialize();
+        $first = true;
+        while ($line = pg_fetch_array($result, null, PGSQL_ASSOC)) {
+            if($first){
+                echo '<table id='.$id.' class=display border=\'1\'>
+                <thead>
+                <tr>';
+                $keys = array_keys($line);
+                foreach($keys as $key){
+                    echo "<th>$key</th>";
+                }
+                echo '</tr>
+                </thead>';
+                $first=false;
+            }
+            echo "<tr>";
+            foreach ($line as $col_value) {
+                echo "<td>$col_value</td>";
+            }
+            echo "</tr>";
+        }
+        echo "</table>";
+    }
 }
